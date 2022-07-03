@@ -1,7 +1,7 @@
 # dvd-vr wrapper
 for better filename.
 
-## what is this script?
+## What is this script?
 dvd-vr is the best tool in the world for ripping DVD-RAMs created by old-school VDRs.
 But I want to use the information in VR_MANGR.IFO for filenames of ripped files.
 
