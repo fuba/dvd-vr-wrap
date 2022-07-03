@@ -39,9 +39,11 @@ while (!system("mount /dev/sr0 $dvd_mount_path")) {
 my $date2info = get_info($dvd_vr_path, $dvd_mount_path);
 say Dumper $date2info;
 
-my %extract = extract($dvd_vr_path, $dvd_mount_path);
+extract($dvd_vr_path, $dvd_mount_path);
 rename_extracted($date2info);
-say "SUCCESS";
+system("eject");
+say "DONE";
+exit;
 
 sub rename_extracted {
     my $date2info = shift;
@@ -86,7 +88,12 @@ sub extract {
     if (!-e $dvd_mount_path.'/DVD_RTAV') {
         die "no DVD_RTAV";
     }
-    system("$app $path/DVD_RTAV/VR_MANGR.IFO $path/DVD_RTAV/VR_MOVIE.VRO") or die $!;
+    eval {
+        system("$app $path/DVD_RTAV/VR_MANGR.IFO $path/DVD_RTAV/VR_MOVIE.VRO");
+    };
+    if ($@) {
+        say "extract was failed: $@";
+    }
 }
 
 sub get_info {
