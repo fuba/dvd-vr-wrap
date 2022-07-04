@@ -68,6 +68,7 @@ sub rename_extracted {
         my $title = $info->{title};
         $title =~ s{\/}{／}g;
         $title =~ s/ /　/g;
+        $title =~ s/\:/：/g;
 
         my $new_name = sprintf(
             "%s（%s　%s）.vob",
