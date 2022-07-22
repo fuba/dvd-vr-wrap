@@ -10,15 +10,17 @@ NAME
     dvd-vr-wrap.pl
 
 SYNOPSIS
-    sudo dvd-vr-wrap.pl [mountpoint] [dvd_vr] [targetdir]
+    sudo dvd-vr-wrap.pl [device] [mountpoint] [dvd_vr] [targetdir]
 
 DESCRIPTION
+    device: device of DVD drive (required)
     mountpoint: path for mounting DVD (required)
     dvd_vr: path for dvd-vr (default: "dvd-vr")
     targetdir: path for saving files (default: "./")
 USAGE
 }
 
+my $device = (shift @ARGV) // die usage();
 my $dvd_mount_path = (shift @ARGV) // die usage();
 die usage() unless -e $dvd_mount_path;
 my $dvd_vr_path = (shift @ARGV) // "dvd-vr";
@@ -26,11 +28,11 @@ die usage() unless -e $dvd_vr_path;
 my $save_target = (shift @ARGV) // "./";
 die usage() unless -e $save_target;
 
-say "move to $save_target";
+say "read $device, move to $save_target";
 chdir $save_target;
 
 my $retry = 5;
-while (!system("mount /dev/sr0 $dvd_mount_path")) {
+while (!system("mount $device $dvd_mount_path")) {
     sleep 3;
     if (--$retry <= 0) {
         die "mount failed";
@@ -41,7 +43,15 @@ say Dumper $date2info;
 
 extract($dvd_vr_path, $dvd_mount_path);
 rename_extracted($date2info);
-system("eject");
+system("eject $device");
+sleep(5);
+system("eject $device");
+sleep(5);
+system("eject $device");
+sleep(5);
+system("eject $device");
+sleep(5);
+system("eject $device");
 say "DONE";
 exit;
 
