@@ -15,7 +15,7 @@ DESCRIPTION
     mountpoint: path for mounting DVD (required)
     ripping_command:
         command for ripping disk.
-        you can use templates: DEVICE, MOUNTPOINT, TARGETDIR
+        you can use templates: _DEVICE_, _MOUNTPOINT_, _TARGETDIR_
         those template strings are replaced by options of this script.
         default: "./dvd-vr-wrap.pl _DEVICE_ _MOUNTPOINT_ dvd_vr _TARGETDIR_"
     targetdir: path for saving files (default: "./")
