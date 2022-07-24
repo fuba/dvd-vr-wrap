@@ -10,7 +10,7 @@ NAME
     dvd-vr-wrap.pl
 
 SYNOPSIS
-    sudo dvd-vr-wrap.pl [device] [mountpoint] [dvd_vr] [targetdir]
+    sudo carton exec dvd-vr-wrap.pl [device] [mountpoint] [dvd_vr] [targetdir]
 
 DESCRIPTION
     device: device of DVD drive (required)

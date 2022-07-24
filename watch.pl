@@ -8,7 +8,7 @@ NAME
     watch.pl
 
 SYNOPSIS
-    sudo watch.pl [device] [mountpoint] [dvd_vr_wrap] [dvd_vr] [targetdir]
+    sudo carton exec watch.pl [device] [mountpoint] [dvd_vr_wrap] [dvd_vr] [targetdir]
 
 DESCRIPTION
     device: device of DVD drive (required)

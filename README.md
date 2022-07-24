@@ -8,4 +8,6 @@ But I want to use the information in VR_MANGR.IFO for filenames of ripped files.
 ## Usage
 - Step 1: install dvd-vr https://www.pixelbeat.org/programs/dvd-vr/
 - Step 2: clone this repo
-- Step 3: execute as `perl [full path of dvd-vr-wrap.pl]`
+- Step 3: execute as `carton exec perl [full path of watch.pl]`
+- Step 4: insert your DVD-RAM
+- Step 5: DVD-RAM will be ejected automatically, return Step 4.
