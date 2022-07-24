@@ -64,8 +64,8 @@ while (1) {
         }
         say "DONE";
     }
-    else {
-        say $d->drive_status;
+    elsif ($d->drive_status != Linux::CDROM::LINUX_CDROM_NO_TOCHDR) {
+        say "status: ".$d->drive_status;
     }
     sleep 5;
 }
