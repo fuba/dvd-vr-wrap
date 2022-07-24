@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-use v5.34;
+use v5.30;
 use Linux::CDROM;
 
 sub usage {
@@ -36,6 +36,14 @@ while (1) {
     }
     elsif ($d->drive_status == Linux::CDROM::CDS_DISC_OK) {
         say "$device is ok";
+        my $retry = 5;
+        while (!system("mount $device $dvd_mount_path")) {
+            sleep 3;
+            if (--$retry <= 0) {
+                die "mount failed";
+            }
+        }
+
         system(
             sprintf(
                 "perl %s %s %s %s %s",
@@ -46,6 +54,15 @@ while (1) {
                 $save_target
             )
         )
+        system("umount $device");
+
+        system("eject $device");
+        sleep(5);
+        if ($d->drive_status != Linux::CDROM::CDS_TRAY_OPEN) {
+            system("eject $device");
+            sleep(5);
+        }
+        say "DONE";
     }
     else {
         say $d->drive_status;

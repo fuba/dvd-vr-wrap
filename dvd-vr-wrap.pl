@@ -1,7 +1,7 @@
 #!/usr/bin/perl
 use strict;
 use warnings;
-use v5.34;
+use v5.30;
 use Data::Dumper;
 
 sub usage {
@@ -31,28 +31,11 @@ die usage() unless -e $save_target;
 say "read $device, move to $save_target";
 chdir $save_target;
 
-my $retry = 5;
-while (!system("mount $device $dvd_mount_path")) {
-    sleep 3;
-    if (--$retry <= 0) {
-        die "mount failed";
-    }
-}
 my $date2info = get_info($dvd_vr_path, $dvd_mount_path);
 say Dumper $date2info;
 
 extract($dvd_vr_path, $dvd_mount_path);
 rename_extracted($date2info);
-system("eject $device");
-sleep(5);
-system("eject $device");
-sleep(5);
-system("eject $device");
-sleep(5);
-system("eject $device");
-sleep(5);
-system("eject $device");
-say "DONE";
 exit;
 
 sub rename_extracted {
