@@ -55,7 +55,7 @@ while (1) {
         system("eject $device");
         sleep(5);
 
-        if ($d->drive_status != Linux::CDROM::CDS_TRAY_OPEN) {
+        while ($d->drive_status != Linux::CDROM::CDS_TRAY_OPEN) {
             system("eject $device");
             sleep(5);
         }
