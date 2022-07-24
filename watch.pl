@@ -8,13 +8,16 @@ NAME
     watch.pl
 
 SYNOPSIS
-    sudo carton exec watch.pl [device] [mountpoint] [dvd_vr_wrap] [dvd_vr] [targetdir]
+    sudo carton exec watch.pl [device] [mountpoint] [ripping_command] [targetdir]
 
 DESCRIPTION
     device: device of DVD drive (required)
     mountpoint: path for mounting DVD (required)
-    dvd_vr_wrap: path of dvd-vr-wrap.pl (default: "./dvd-vr-wrap.pl")
-    dvd_vr: path for dvd-vr (default: "dvd-vr")
+    ripping_command:
+        command for ripping disk.
+        you can use templates: DEVICE, MOUNTPOINT, TARGETDIR
+        those template strings are replaced by options of this script.
+        default: "./dvd-vr-wrap.pl _DEVICE_ _MOUNTPOINT_ dvd_vr _TARGETDIR_"
     targetdir: path for saving files (default: "./")
 USAGE
 }
@@ -22,12 +25,15 @@ USAGE
 my $device = (shift @ARGV) // die usage();
 my $dvd_mount_path = (shift @ARGV) // die usage();
 die usage() unless -e $dvd_mount_path;
-my $dvd_vr_wrap_path = (shift @ARGV) // "./dvd-vr-wrap.pl";
-die usage() unless -e $dvd_vr_wrap_path;
-my $dvd_vr_path = (shift @ARGV) // "dvd-vr";
-die usage() unless -e $dvd_vr_path;
+my $ripping_command = (shift @ARGV) // "./dvd-vr-wrap.pl dvd_vr _DEVICE_ _MOUNTPOINT_ _TARGETDIR_";
+die usage() unless $ripping_command;
 my $save_target = (shift @ARGV) // "./";
 die usage() unless -e $save_target;
+
+$ripping_command =~ s/_DEVICE_/\"$device\"/;
+$ripping_command =~ s/_MOUNTPOINT_/\"$dvd_mount_path\"/;
+$ripping_command =~ s/_TARGETDIR_/\"$save_target\"/;
+say "ripping_command = $ripping_command";
 
 my $d = Linux::CDROM->new($device) or die $Linux::CDROM::error;
 while (1) {
@@ -44,16 +50,7 @@ while (1) {
             }
         }
 
-        system(
-            sprintf(
-                "perl %s %s %s %s %s",
-                $dvd_vr_wrap_path,
-                $device,
-                $dvd_mount_path,
-                $dvd_vr_path,
-                $save_target
-            )
-        );
+        system($ripping_command);
         system("umount $device");
         system("eject $device");
         sleep(5);
