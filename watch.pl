@@ -53,11 +53,11 @@ while (1) {
                 $dvd_vr_path,
                 $save_target
             )
-        )
+        );
         system("umount $device");
-
         system("eject $device");
         sleep(5);
+
         if ($d->drive_status != Linux::CDROM::CDS_TRAY_OPEN) {
             system("eject $device");
             sleep(5);
