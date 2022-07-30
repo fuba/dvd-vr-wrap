@@ -71,8 +71,8 @@ my @crop_files = get_crop($crop_dir, $screenshot_dir, $dvd_mount_path);
 
 get_video_files($dvd_mount_path, $video_dir);
 
-my $chown_command = "chown -R $owner_group \"$disk_dir\"";
-system($chown_command);
+system("chmod 700 \"$disk_dir/VIDEO_TS\"");
+system("chown -R $owner_group \"$disk_dir\"");
 
 sub get_video_files {
     my ($dvd_mount_path, $video_dir) = @_;
